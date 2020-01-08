@@ -5,7 +5,7 @@ Unit testing for Minecraft behavior packs
 ```javascript
 import { ENV, BPTest } from "bptest";
 
-const PROJ = "C:\\Users\\bened\\AppData\\Local\\Packages\\Microsoft.MinecraftUWP_8wekyb3d8bbwe\\LocalState\\games\\com.mojang\\development_behavior_packs\\Project Fable BP";
+const PROJ = "path/to/project";
 
 ENV.setup(PROJ, async () => {
     const W = new BPTest.World();
