@@ -29,23 +29,21 @@ class State implements Tickable {
     private on_entry: string[];
     private on_exit: string[];
 
-    constructor({ animations, transitions, on_entry, on_exit }: IState, private animation_controller: AnimationController, private entity: Entity) {
+    constructor({ animations=[], transitions=[], on_entry=[], on_exit=[] }: IState, private animation_controller: AnimationController, private entity: Entity) {
         this.on_entry = on_entry || [];
         this.on_exit = on_exit || [];
-        this.transitions = transitions?.map(t => Object.entries(t)[0]) || [];
+        this.transitions = transitions.map(t => Object.entries(t)[0]);
 
-        if(animations) {
-            animations.forEach(anim_id => {
-                if(typeof anim_id === "string") {
-                    this.animations.set(anim_id, [entity.animations.run(anim_id), true]);
-                } else {
-                    const [[id, condition]] = Object.entries(anim_id);
-                    let anim = entity.animations.get(id);
-                    if(anim !== undefined)
-                        this.animations.set(id, [anim, condition]);
-                }
-            });
-        }
+        animations.forEach(anim_id => {
+            if(typeof anim_id === "string") {
+                this.animations.set(anim_id, [entity.animations.run(anim_id), true]);
+            } else {
+                const [[id, condition]] = Object.entries(anim_id);
+                let anim = entity.animations.get(id);
+                if(anim !== undefined)
+                    this.animations.set(id, [anim, condition]);
+            }
+        });
     }
 
     enter() {
