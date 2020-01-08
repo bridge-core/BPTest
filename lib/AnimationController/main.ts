@@ -39,9 +39,7 @@ class State implements Tickable {
                 this.animations.set(anim_id, [entity.animations.run(anim_id), true]);
             } else {
                 const [[id, condition]] = Object.entries(anim_id);
-                let anim = entity.animations.get(id);
-                if(anim !== undefined)
-                    this.animations.set(id, [anim, condition]);
+                this.animations.set(id, [entity.animations.get(id), condition]);
             }
         });
     }

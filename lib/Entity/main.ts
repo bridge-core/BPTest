@@ -6,7 +6,9 @@ import { ENV } from "../main";
 import { IAnimationController, AnimationControllers, AnimationController } from "../AnimationController/main";
 
 export interface IEntity {
-    description: IDescription;
+    "minecraft:entity": {
+        description?: IDescription;
+    }
 }
 export interface IDescription {
     identifier?: string;
@@ -32,7 +34,7 @@ export class Entity implements Tickable {
 
     private animate: [Animation | AnimationController, string | boolean][] = [];
 
-    constructor({ description={} }: IEntity, store: any = {}) {
+    constructor({ "minecraft:entity": { description={} }={} }: IEntity, store: any = {}) {
         //INIT MOLANG INTERPRETER
         this.interpreter = new MoLang.Interpreter(store);
 
@@ -54,14 +56,14 @@ export class Entity implements Tickable {
                 if(anim === undefined) return ENV.LOG.addError(`Unable to find animation "${full}".`);
 
                 anims[full] = anim;
-                anims[full] = anim;
+                anims[short] = anim;
             } else {
                 return ENV.LOG.addError(`Invalid animation or animation controller name: "${full}".`);
             }
         }
         
-        this.animation_controllers = new AnimationControllers({ animation_controllers: anim_cs }, this);
         this.animations = new Animations({ animations: anims }, this);
+        this.animation_controllers = new AnimationControllers({ animation_controllers: anim_cs }, this);
 
         //INITIALIZE STATEMENT
         initialize.forEach((i: string) => this.interpreter.parse(i));
