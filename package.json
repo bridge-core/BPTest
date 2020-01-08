@@ -1,6 +1,6 @@
 {
   "name": "bptest",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Unit testing for Minecraft behavior packs",
   "main": "dist/main.js",
   "directories": {
