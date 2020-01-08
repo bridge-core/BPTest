@@ -6,7 +6,8 @@ import { Entity } from "./Entity/main";
 import { AnimationControllers } from "./AnimationController/main";
 import { readJSON } from "./FS/main";
 
-export const BPTest = {
+
+const BPTest = {
     Animations,
     AnimationControllers,
     Entity,
@@ -21,8 +22,8 @@ export class ENV {
         this.LOG = l;
     }
 
-    static async setup(proj_path: string, then: (proj_path: string) => Promise<void>) {
+    static async setup(proj_path: string, then: (lib: typeof BPTest) => Promise<void>) {
         await AnimLib.loadAll(proj_path);
-        then(proj_path);
+        then(BPTest);
     }
 }
