@@ -36,9 +36,9 @@ export class Animation implements Tickable {
     private timeline = new Map<number, string[]>();
 
     constructor({ animation_length, loop, timeline }: IAnimation, private entity: Entity) {
-        this.animation_length = animation_length / 20;
+        this.animation_length = animation_length * 20;
         this.loop = loop;
-        this.timeline = new Map(Object.entries(timeline).map(([timestamp, effects]) => [Number(timestamp) / 20, effects]));
+        this.timeline = new Map(Object.entries(timeline).map(([timestamp, effects]) => [Number(timestamp) * 20, effects]));
     }
 
     tick(curr_tick: number) {

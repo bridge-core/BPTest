@@ -19,7 +19,7 @@ test("player.json", (done) => {
         });
     
         world.add(player);
-        world.tick(200);
+        world.tick(22);
 
         expect(player.animation_controllers.get("bridge_custom_item_behavior")).toBeDefined();
         console.log(ENV.LOG.getLogs())

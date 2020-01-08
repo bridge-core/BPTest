@@ -5,7 +5,7 @@ import { ENV } from "../../main";
 
 test("Animation test", () => {
     const W = new World();
-    const entity = new Entity({ description: {} });
+    const entity = new Entity({ "minecraft:entity": { description: {} } });
 
     const anims = new Animations({
         animations: {

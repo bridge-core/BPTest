@@ -17,7 +17,7 @@
 						}
 					],
 					"on_entry": [
-						"/say test"
+						"/say Entered area!"
 					],
 					"on_exit": [
 						"@s minecraft:gain_bad_omen"
