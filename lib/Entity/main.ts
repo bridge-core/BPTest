@@ -1,5 +1,5 @@
 import MoLang from "molang";
-import { Tickable } from "../World/main";
+import { Tickable, World } from "../World/main";
 import { Animations, IAnimation, Animation } from "../Animation/main";
 import { AnimLib } from "../Animation/lib";
 import { ENV } from "../main";
@@ -52,6 +52,7 @@ export class Entity implements Tickable {
     private component_groups = new Map<string, ComponentGroup>();
     private components = new ComponentStore();
     private events = new Map<string, EntityEvent>();
+    private world?: World;
 
     constructor({ "minecraft:entity": { description={}, events={}, components={}, component_groups={} }={} }: IEntity, store: any = {}) {
         //INIT MOLANG INTERPRETER
@@ -164,8 +165,11 @@ export class Entity implements Tickable {
     getComponents() {
         return this.components;
     }
-
     getSubj(subj: Subject) {
         return this.subjects.get(subj);
+    }
+
+    setWorld(world: World) {
+        this.world = world;
     }
 }

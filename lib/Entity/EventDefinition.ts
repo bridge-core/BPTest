@@ -2,14 +2,14 @@ import { Subject, IFilter } from "./Filter/Types";
 import { Entity } from "./main";
 import Filter from "./Filter/main";
 
-export interface EventDefinitionData {
+export interface IEventDefinition {
     event: string;
     filters?: IFilter;
     target?: Subject;
 }
 
 export class EventDefintion {
-    constructor(private def: EventDefinitionData | undefined) {}
+    constructor(private def: IEventDefinition | undefined) {}
 
     private get valid_target() {
         if(this.def === undefined) return false;

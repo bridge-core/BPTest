@@ -1,21 +1,21 @@
-import { EventDefinitionData, EventDefintion } from "../EventDefinition";
+import { IEventDefinition, EventDefintion } from "../EventDefinition";
 import { Entity } from "../main";
 import { weightedChoice } from "../../Utility/WeightedChoice";
 import { EntityComponent, TickableComponent } from "./Component";
 
 type WeightElement = { weight: number; value: number };
-export interface TimerData {
+export interface ITimer {
     looping?: boolean;
     randomInterval?: boolean;
     random_time_choices: WeightElement[];
     time?: number[] | number;
-    time_down_event?: EventDefinitionData;
+    time_down_event?: IEventDefinition;
 }
 
 export class Timer extends TickableComponent {
     public readonly key = "minecraft:timer";
     private finish_tick = -1;
-    constructor(entity: Entity, data: TimerData) { super(entity, data); }
+    constructor(entity: Entity, data: ITimer) { super(entity, data); }
 
     private get time(): number {
         if(this.data.random_time_choices === undefined) {

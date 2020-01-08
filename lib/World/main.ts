@@ -1,3 +1,5 @@
+import { Entity } from "../Entity/main";
+
 export interface Tickable {
     tick: (curr_tick: number) => void;
 }
@@ -7,6 +9,9 @@ export class World {
     curr_tick: number = 0;
 
     add(tickable: Tickable) {
+        if(tickable instanceof Entity)
+            tickable.setWorld(this);
+            
         this.tick_array.push(tickable);
     }
     tick(n?: number) {

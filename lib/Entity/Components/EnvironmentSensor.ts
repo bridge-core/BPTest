@@ -1,20 +1,22 @@
-import { EventDefinitionData, EventDefintion } from "../EventDefinition";
+import { IEventDefinition, EventDefintion } from "../EventDefinition";
 import { Entity } from "../main";
 import { EntityComponent, TickableComponent } from "./Component";
 
-export interface EnvironmentSensorData {
-    on_environment?: EventDefinitionData;
+export interface IEnvironmentSensorData {
+    triggers?: { on_environment: IEventDefinition } | { on_environment: IEventDefinition }[]
 }
 
 export class EnvironmentSensor extends TickableComponent {
     public readonly key = "minecraft:environment_sensor";
-    constructor(entity: Entity, data: EnvironmentSensorData[] | EnvironmentSensorData) { super(entity, data); }
+    constructor(entity: Entity, data: IEnvironmentSensorData) { super(entity, data); }
 
     tick() {
-        if(Array.isArray(this.data)) {
-            this.data.forEach(e => new EventDefintion(e.on_environment).eval(this.entity));
+        const { triggers=[] } = this.data;
+
+        if(Array.isArray(triggers)) {
+            triggers.forEach(t => new EventDefintion(t.on_environment).eval(this.entity));
         } else {
-            new EventDefintion(this.data.on_environment).eval(this.entity);
+            new EventDefintion(triggers.on_environment).eval(this.entity);
         }
     }
 }

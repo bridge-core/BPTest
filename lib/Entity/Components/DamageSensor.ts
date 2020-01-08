@@ -1,25 +1,32 @@
-import { EventDefinitionData, EventDefintion } from "../EventDefinition";
+import { IEventDefinition, EventDefintion } from "../EventDefinition";
 import { Entity } from "../main";
 import { EntityComponent, TickableComponent } from "./Component";
 
-export interface DamageSensorData {
-    on_damage?: EventDefinitionData;
+export interface IDamageTrigger {
+    on_damage?: IEventDefinition;
     deals_damage?: boolean;
     cause: string;
 }
 
+export interface IDamageSensor {
+    triggers?: IDamageTrigger | IDamageTrigger[];
+    
+}
+
 export class DamageSensor extends TickableComponent {
     public readonly key = "minecraft:damage_sensor";
-    private registered_damage: boolean = false;
-    constructor(entity: Entity, data: DamageSensorData[] | DamageSensorData) { super(entity, data); }
+    private registered_damage = false;
+    constructor(entity: Entity, data: IDamageSensor) { super(entity, data); }
 
     tick() {
         if(!this.registered_damage) return;
 
-        if(Array.isArray(this.data)) {
-            this.data.forEach(e => new EventDefintion(e.on_damage).eval(this.entity));
+        const { triggers=[] } = this.data;
+
+        if(Array.isArray(triggers)) {
+            triggers.forEach(t => new EventDefintion(t.on_damage).eval(this.entity));
         } else {
-            new EventDefintion(this.data.on_damage).eval(this.entity);
+            new EventDefintion(triggers.on_damage).eval(this.entity);
         }
     }
 
