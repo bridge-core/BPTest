@@ -2,6 +2,10 @@
 export class Log {
     private logs: { type?: "error" | "warning"; text: string }[] = [];
 
+    getLogs() {
+        return this.logs.map(({text}) => text);
+    }
+
     add(str: string) {
         this.logs.push({ text: str });
     }

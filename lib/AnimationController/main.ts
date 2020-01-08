@@ -79,6 +79,7 @@ export class AnimationController implements Tickable {
     //Functionality
     public is_running = false;
     private curr_state: State = new State({}, this, this.entity);
+    private just_transitioned = true;
 
     //JSON Format
     private initial_state: string;
@@ -92,7 +93,6 @@ export class AnimationController implements Tickable {
         if(potential === undefined)
             return ENV.LOG.addError(`No default state for animation controller "${id}".`);
         this.curr_state = potential;
-        this.curr_state.enter();
     }
 
     transition(id: string) {
@@ -100,7 +100,7 @@ export class AnimationController implements Tickable {
         if(potential !== undefined) {
             this.curr_state.exit();
             this.curr_state = potential;
-            this.curr_state.enter();
+            this.just_transitioned = true;
         } else {
             return ENV.LOG.addError(`Unknown controller state: "${id}"`);
         }
@@ -108,6 +108,11 @@ export class AnimationController implements Tickable {
 
     tick(curr_tick: number) {
         if(!this.is_running) return;
+
+        if(this.just_transitioned) {
+            this.curr_state.enter();
+            this.just_transitioned = false;
+        }
 
         this.curr_state.tick(curr_tick);
     }
@@ -131,14 +136,14 @@ export class AnimationControllers implements Tickable {
 
     get(id: string) {
         let anim = this.animation_controllers.get(id);
-        if(anim === undefined) return ENV.LOG.addError(`Unknown animation: "${id}"`);
+        if(anim === undefined) return ENV.LOG.addError(`Unknown animation controller: "${id}"`);
         
         return anim;
     }
 
     run(id: string) {
         let anim = this.animation_controllers.get(id);
-        if(anim === undefined) return ENV.LOG.addError(`Unknown animation: "${id}"`);
+        if(anim === undefined) return ENV.LOG.addError(`Unknown animation controller: "${id}"`);
 
         anim.start();
         return anim;
@@ -150,7 +155,7 @@ export class AnimationControllers implements Tickable {
 
     stop(id: string) {
         let anim = this.animation_controllers.get(id);
-        if(anim === undefined) return ENV.LOG.addError(`Unknown animation: "${id}"`);
+        if(anim === undefined) return ENV.LOG.addError(`Unknown animation controller: "${id}"`);
 
         anim.stop();
         return anim;

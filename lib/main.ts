@@ -15,6 +15,7 @@ const BPTest = {
     readJSON
 }
 
+export { Log } from "./Log/main";
 export class ENV {
     public static LOG = new Log();
 

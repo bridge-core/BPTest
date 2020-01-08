@@ -9,32 +9,35 @@ export interface IEntity {
     description: IDescription;
 }
 export interface IDescription {
-    identifier: string;
-    runtime_identifier: string;
-    is_spawnable: boolean;
-    is_summonable: boolean;
-    is_experimental: boolean;
+    identifier?: string;
+    runtime_identifier?: string;
+    is_spawnable?: boolean;
+    is_summonable?: boolean;
+    is_experimental?: boolean;
 
-    animations: {
+    animations?: {
         [short: string]: string;
     }
 
-    scripts: {
+    scripts?: {
         initialize: string[];
         animate: (string | { [id: string]: string })[];
     }
 }
 
 export class Entity implements Tickable {
-    public interpreter = new MoLang.Interpreter({ variable: {}, query: {} });
+    public interpreter: MoLang.Interpreter;
     public animations: Animations = new Animations({ animations: {} }, this);
     public animation_controllers: AnimationControllers = new AnimationControllers({ animation_controllers: {} }, this);
 
     private animate: [Animation | AnimationController, string | boolean][] = [];
 
-    constructor({ description }: IEntity) {
+    constructor({ description={} }: IEntity, store: any = {}) {
+        //INIT MOLANG INTERPRETER
+        this.interpreter = new MoLang.Interpreter(store);
+
         //Load description
-        const { animations, scripts: { initialize, animate } } = description;
+        const { animations={}, scripts: { initialize=[], animate=[] }={} } = description;
 
         //ANIMATIONS
         let anims: { [id: string]: IAnimation } = {};
@@ -108,5 +111,7 @@ export class Entity implements Tickable {
 
     }
 
-    trigger(event: string) {}
+    trigger(event: string) {
+        ENV.LOG.add(`Triggered event "${event}"`);
+    }
 }
