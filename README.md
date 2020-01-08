@@ -7,6 +7,7 @@ Unit testing for Minecraft behavior packs
 ## Usage
 ```javascript
 import { ENV } from "bptest";
+import path from "path";
 
 const PROJ = "path/to/project";
 
