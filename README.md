@@ -1,6 +1,9 @@
 # BPTest
 Unit testing for Minecraft behavior packs
 
+## Installation
+```npm i bptest```
+
 ## Usage
 ```javascript
 import { ENV, BPTest } from "bptest";
