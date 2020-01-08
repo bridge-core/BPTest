@@ -1,11 +1,11 @@
 import { promises as fs } from "fs";
 import path from "path";
-import { IAnimation } from "./main";
-import { readJSON } from "../FS/main";
+import { IAnimation } from "../Animation/main";
+import { readJSON } from "./main";
 import { IAnimationController } from "../AnimationController/main";
 import { ENV } from "../main";
 
-export class AnimLib {
+export class Lib {
     private static lib = new Map<string, IAnimation>();
     private static c_lib = new Map<string, IAnimationController>();
 

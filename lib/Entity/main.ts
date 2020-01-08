@@ -1,7 +1,7 @@
 import MoLang from "molang";
 import { Tickable, World } from "../World/main";
 import { Animations, IAnimation, Animation } from "../Animation/main";
-import { AnimLib } from "../Animation/lib";
+import { Lib } from "../FS/lib";
 import { ENV } from "../main";
 import { IAnimationController, AnimationControllers, AnimationController } from "../AnimationController/main";
 import { EntityEvent, IEvent, IFlatEvent } from "./Event";
@@ -66,13 +66,13 @@ export class Entity implements Tickable {
         let anim_cs: { [id: string]: IAnimationController } = {};
         for(let [short, full] of Object.entries(animations)) {            
             if(full.startsWith("controller.animation.")) {
-                let anim = AnimLib.getController(full);
+                let anim = Lib.getController(full);
                 if(anim === undefined) return ENV.LOG.addError(`Unable to find animation controller "${full}".`);
 
                 anim_cs[full] = anim;
                 anim_cs[short] = anim;
             } else if(full.startsWith("animation.")) {
-                let anim = AnimLib.getAnim(full);
+                let anim = Lib.getAnim(full);
                 if(anim === undefined) return ENV.LOG.addError(`Unable to find animation "${full}".`);
 
                 anims[full] = anim;

@@ -1,7 +1,7 @@
 import { Animations } from "./Animation/main";
 import { World } from "./World/main";
 import { Log } from "./Log/main";
-import { AnimLib } from "./Animation/lib";
+import { Lib } from "./FS/lib";
 import { Entity } from "./Entity/main";
 import { AnimationControllers } from "./AnimationController/main";
 import { readJSON } from "./FS/main";
@@ -24,7 +24,7 @@ export class ENV {
     }
 
     static async setup(proj_path: string, then: (lib: typeof BPTest) => Promise<void>) {
-        await AnimLib.loadAll(proj_path);
+        await Lib.loadAll(proj_path);
         then(BPTest);
     }
 }
