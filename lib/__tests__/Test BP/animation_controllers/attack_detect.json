@@ -1,0 +1,30 @@
+//bridge-file-version: #3
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+		"controller.animation.attack_detect": {
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"on_attack": "variable.attack_time > 0.1"
+						}
+					],
+					"on_entry": [
+						"/say Init"
+					]
+				},
+				"on_attack": {
+					"transitions": [
+						{
+							"default": "variable.attack_time < 0.1"
+						}
+					],
+					"on_entry": [
+						"/say Detected attack"
+					]
+				}
+			}
+		}
+	}
+}

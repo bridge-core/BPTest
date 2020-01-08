@@ -1,0 +1,30 @@
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+		"controller.animation.map_area.test_pack_unnamed": {
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"map_area_test_pack_unnamed": "query.get_position(0) >= 1 && query.get_position(1) >= 1 && query.get_position(2) >= 3 && query.get_position(0) <= 0 && query.get_position(1) <= 0 && query.get_position(2) <= 0"
+						}
+					]
+				},
+				"in_area": {
+					"transitions": [
+						{
+							"default": "!(query.get_position(0) >= 1 && query.get_position(1) >= 1 && query.get_position(2) >= 3 && query.get_position(0) <= 0 && query.get_position(1) <= 0 && query.get_position(2) <= 0)"
+						}
+					],
+					"on_entry": [
+						"/say test"
+					],
+					"on_exit": [
+						"@s minecraft:gain_bad_omen"
+					],
+					"animations": ["map_area_timer_test_pack_unnamed"]
+				}
+			}
+		}
+	}
+}

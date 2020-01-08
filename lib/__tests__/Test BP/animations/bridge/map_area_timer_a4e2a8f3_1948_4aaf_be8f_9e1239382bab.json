@@ -1,0 +1,14 @@
+{
+	"format_version": "1.10.0",
+	"animations": {
+		"animation.map_area_timer.test_pack_unnamed": {
+			"animation_length": 1,
+			"loop": true,
+			"timeline": {
+				"1": [
+					"/say test"
+				]
+			}
+		}
+	}
+}

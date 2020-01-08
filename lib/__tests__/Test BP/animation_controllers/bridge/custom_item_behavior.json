@@ -1,0 +1,67 @@
+{
+	"format_version": "1.10.0",
+	"animation_controllers": {
+		"controller.animation.bridge_custom_item_behavior": {
+			"states": {
+				"default": {
+					"transitions": [
+						{
+							"holds_test": "query.get_equipped_item_name(0, 0) == 'test'"
+						},
+						{
+							"holds_test2": "query.get_equipped_item_name(0, 0) == 'test2'"
+						},
+						{
+							"holds_honey_bottle": "query.get_equipped_item_name(0, 0) == 'honey_bottle'"
+						}
+					],
+					"on_entry": [
+						"@s bridge:on_reset_player"
+					]
+				},
+				"holds_test": {
+					"transitions": [
+						{
+							"default": "query.get_equipped_item_name(0, 0) != 'test'"
+						}
+					],
+					"on_entry": [
+						"@s bridge:on_equipped_1f9d90a7_df69_4519_9b92_d5c3cb35bf6c"
+					],
+					"on_exit": [
+						"@s bridge:on_unequipped_1f9d90a7_df69_4519_9b92_d5c3cb35bf6c"
+					]
+				},
+				"holds_test2": {
+					"transitions": [
+						{
+							"default": "query.get_equipped_item_name(0, 0) != 'test2'"
+						}
+					],
+					"on_entry": [
+						"@s bridge:on_equipped_676f345d_fdf9_4550_a9db_8f4c2b379c51",
+						"@s bridge:remove_command_id_1",
+						"/say hi"
+					],
+					"on_exit": [
+						"@s bridge:on_unequipped_676f345d_fdf9_4550_a9db_8f4c2b379c51",
+						"@s minecraft:entity_born"
+					]
+				},
+				"holds_honey_bottle": {
+					"transitions": [
+						{
+							"default": "query.get_equipped_item_name(0, 0) != 'honey_bottle'"
+						}
+					],
+					"on_entry": [
+						"@s bridge:on_equipped_e41753f3_74c0_4974_a621_bb841c3f84f1"
+					],
+					"on_exit": [
+						"@s bridge:on_unequipped_e41753f3_74c0_4974_a621_bb841c3f84f1"
+					]
+				}
+			}
+		}
+	}
+}
