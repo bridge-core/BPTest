@@ -1,14 +1,15 @@
-import { EntityComponent } from "./Components/Component";
+import { EntityComponent, TickableComponent } from "./Components/Component";
 
 export default class ComponentStore {
     private components = new Map<string, EntityComponent>();
-    private requires_tick = new Map<string, EntityComponent>();
+    private requires_tick = new Map<string, TickableComponent>();
+
     add(key: string, component: EntityComponent) {
         if(this.components.has(key)) {
             this.components.get(key)!.deactivate();
         }
 
-        if(component.requires_tick) this.requires_tick.set(key, component);
+        if(component.requires_tick) this.requires_tick.set(key, component as TickableComponent);
         this.components.set(key, component);
     }
     get(key: string) {

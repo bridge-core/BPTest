@@ -1,7 +1,7 @@
 import { EventDefinitionData, EventDefintion } from "../EventDefinition";
 import { Entity } from "../main";
 import { weightedChoice } from "../../Utility/WeightedChoice";
-import { EntityComponent } from "./Component";
+import { EntityComponent, TickableComponent } from "./Component";
 
 type WeightElement = { weight: number; value: number };
 export interface TimerData {
@@ -12,8 +12,8 @@ export interface TimerData {
     time_down_event?: EventDefinitionData;
 }
 
-export class Timer extends EntityComponent {
-    public key = "minecraft:timer";
+export class Timer extends TickableComponent {
+    public readonly key = "minecraft:timer";
     private finish_tick = -1;
     constructor(entity: Entity, data: TimerData) { super(entity, data); }
 
@@ -40,7 +40,7 @@ export class Timer extends EntityComponent {
     }
     tick(curr_tick: number) {
         if(this.finish_tick === -1) {
-            this.finish_tick = curr_tick + this.time * 20;
+            this.finish_tick = curr_tick + this.time * 20 + 1;
         }
 
         if(curr_tick > this.finish_tick) {

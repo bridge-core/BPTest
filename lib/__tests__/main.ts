@@ -20,6 +20,11 @@ test("player.json", (done) => {
     
         world.add(player);
         world.tick(22);
+        player.trigger("minecraft:gain_bad_omen");
+        world.tick(1);
+        console.log(player.getComponents());
+        world.tick(19);
+        console.log(player.getComponents());
 
         expect(player.animation_controllers.get("bridge_custom_item_behavior")).toBeDefined();
         console.log(ENV.LOG.getLogs())

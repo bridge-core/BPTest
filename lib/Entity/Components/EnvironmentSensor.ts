@@ -1,14 +1,13 @@
 import { EventDefinitionData, EventDefintion } from "../EventDefinition";
 import { Entity } from "../main";
-import { EntityComponent } from "./Component";
+import { EntityComponent, TickableComponent } from "./Component";
 
 export interface EnvironmentSensorData {
     on_environment?: EventDefinitionData;
 }
 
-export class EnvironmentSensor extends EntityComponent {
-    public key = "minecraft:environment_sensor";
-    public requires_tick = true;
+export class EnvironmentSensor extends TickableComponent {
+    public readonly key = "minecraft:environment_sensor";
     constructor(entity: Entity, data: EnvironmentSensorData[] | EnvironmentSensorData) { super(entity, data); }
 
     tick() {

@@ -1,6 +1,6 @@
 import { EventDefinitionData, EventDefintion } from "../EventDefinition";
 import { Entity } from "../main";
-import { EntityComponent } from "./Component";
+import { EntityComponent, TickableComponent } from "./Component";
 
 export interface DamageSensorData {
     on_damage?: EventDefinitionData;
@@ -8,9 +8,8 @@ export interface DamageSensorData {
     cause: string;
 }
 
-export class DamageSensor extends EntityComponent {
-    public key = "minecraft:damage_sensor";
-    public requires_tick = true;
+export class DamageSensor extends TickableComponent {
+    public readonly key = "minecraft:damage_sensor";
     private registered_damage: boolean = false;
     constructor(entity: Entity, data: DamageSensorData[] | DamageSensorData) { super(entity, data); }
 
