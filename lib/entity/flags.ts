@@ -6,6 +6,11 @@ export type FlagName =
 	| 'canSwim'
 	| 'canWalk'
 	| 'isOnFire'
+	| 'identifier'
+	| 'runtime_identifier'
+	| 'isSpawnable'
+	| 'isSummonable'
+	| 'isExperimental'
 
 export class EntityFlags {
 	protected canClimb = false
@@ -17,11 +22,11 @@ export class EntityFlags {
 
 	constructor(protected entity: Entity) {}
 
-	set(flagName: FlagName, value: boolean) {
-		this[flagName] = value
+	set(flagName: FlagName, value: unknown) {
+		;(this as Record<string, unknown>)[flagName] = value
 	}
 
 	get(flagName: FlagName) {
-		return this[flagName]
+		return (this as Record<string, unknown>)[flagName]
 	}
 }

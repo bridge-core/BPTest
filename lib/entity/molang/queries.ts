@@ -3,32 +3,25 @@ import { Variant } from '../components/variant'
 import { Health } from '../components/health'
 
 export function createQueryEnv(entity: Entity) {
+	//Helper function for accessing components
+	const c = (name: string) => entity.getActiveComponent(name)
+
 	return {
 		//Entity Components
 		'query.variant': () =>
-			(entity.getActiveComponent(
-				'minecraft:variant'
-			) as Variant)?.getValue() ?? 0,
+			(c('minecraft:variant') as Variant)?.getValue() ?? 0,
 		'query.mark_variant': () =>
-			(entity.getActiveComponent(
-				'minecraft:mark_variant'
-			) as Variant)?.getValue() ?? 0,
+			(c('minecraft:mark_variant') as Variant)?.getValue() ?? 0,
 		'query.skin_id': () =>
-			(entity.getActiveComponent(
-				'minecraft:skin_id'
-			) as Variant)?.getValue() ?? 0,
+			(c('minecraft:skin_id') as Variant)?.getValue() ?? 0,
 		'query.health': () =>
-			(entity.getActiveComponent(
-				'minecraft:health'
-			) as Health)?.getValue() ?? 20,
+			(c('minecraft:health') as Health)?.getValue() ?? 20,
+		'query.is_alive': () =>
+			((c('minecraft:health') as Health)?.getValue() ?? 20) > 0,
 		'query.position': (index?: number) =>
 			index === undefined
-				? {
-						x: entity.position[0],
-						y: entity.position[1],
-						z: entity.position[2],
-				  }
-				: entity.position[index],
+				? entity.position.asObject()
+				: entity.position.at(index),
 
 		//Entity Flags
 		'query.can_climb': () => entity.flags.get('canClimb'),
@@ -43,5 +36,26 @@ export function createQueryEnv(entity: Entity) {
 			Array.isArray(value) ? value.length : 1,
 		'query.combine_entities': (...entities: unknown[]) =>
 			entities.flat(Infinity),
+		'query.get_nearby_entities': (radius: number, filterId?: string) =>
+			entity
+				.getWorld()
+				.nearbyEntities(entity.position, radius)
+				.filter(
+					(currentEntity) =>
+						currentEntity.flags.get('identifier') === filterId
+				),
+		'query.get_nearby_entities_except_self': (
+			radius: number,
+			filterId?: string
+		) =>
+			entity
+				.getWorld()
+				.nearbyEntities(entity.position, radius)
+				.filter(
+					(currentEntity) =>
+						currentEntity !== entity &&
+						(!filterId ||
+							currentEntity.flags.get('identifier') === filterId)
+				),
 	}
 }

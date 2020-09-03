@@ -5,8 +5,9 @@ import { createQueryEnv } from './molang/queries'
 import { execute as executeMoLang } from 'molang'
 import { EntityFlags } from './flags'
 import { World } from '../world/main'
+import { Position } from '../world/position'
 export class Entity implements Tickable {
-	public readonly position: [number, number, number] = [0, 0, 0]
+	public readonly position = new Position(0, 0, 0)
 	public readonly flags = new EntityFlags(this)
 
 	public readonly componentGroups = new ComponentGroupManager(this)
@@ -38,6 +39,9 @@ export class Entity implements Tickable {
 
 	getActiveComponent(componentName: string) {
 		return this.activeComponents.get(componentName)
+	}
+	getWorld() {
+		return this.world
 	}
 
 	tick(currentTick: number) {
