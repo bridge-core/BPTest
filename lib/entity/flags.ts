@@ -6,27 +6,23 @@ export type FlagName =
 	| 'canSwim'
 	| 'canWalk'
 	| 'isOnFire'
+	| 'isBlocking'
 	| 'identifier'
-	| 'runtime_identifier'
+	| 'runtimeIdentifier'
 	| 'isSpawnable'
 	| 'isSummonable'
 	| 'isExperimental'
+	| 'numericalIdentifier'
 
 export class EntityFlags {
-	protected canClimb = false
-	protected canFly = false
-	protected canSwim = false
-	protected canWalk = false
-
-	protected isOnFire = false
-
+	protected registry = new Map<FlagName, unknown>()
 	constructor(protected entity: Entity) {}
 
 	set(flagName: FlagName, value: unknown) {
-		;(this as Record<string, unknown>)[flagName] = value
+		this.registry.set(flagName, value)
 	}
 
 	get(flagName: FlagName) {
-		return (this as Record<string, unknown>)[flagName]
+		return this.registry.get(flagName)
 	}
 }

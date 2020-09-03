@@ -6,15 +6,20 @@ import { execute as executeMoLang } from 'molang'
 import { EntityFlags } from './flags'
 import { World } from '../world/main'
 import { Position } from '../world/position'
+import { TargetRegistry, Target } from './targets'
 export class Entity implements Tickable {
 	public readonly position = new Position(0, 0, 0)
 	public readonly flags = new EntityFlags(this)
 
-	public readonly componentGroups = new ComponentGroupManager(this)
+	protected targetRegistry = new TargetRegistry(this)
+	protected componentGroups = new ComponentGroupManager(this)
 	protected activeComponents = new Map<string, Component>()
 	protected queryEnv = createQueryEnv(this)
 
-	constructor(protected world: World) {}
+	constructor(protected world: World) {
+		this.world.addEntity(this)
+		this.targetRegistry.set('self', this)
+	}
 
 	executeMoLang(expression: string) {
 		executeMoLang(expression, this.queryEnv)
@@ -36,12 +41,17 @@ export class Entity implements Tickable {
 		component.reset()
 		this.activeComponents.delete(componentName)
 	}
+	triggerEvent(eventName: string) {}
 
 	getActiveComponent(componentName: string) {
 		return this.activeComponents.get(componentName)
 	}
 	getWorld() {
 		return this.world
+	}
+	getTarget(target?: Target) {
+		if (!target) return this
+		return this.targetRegistry.get(target)
 	}
 
 	tick(currentTick: number) {
