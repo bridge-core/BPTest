@@ -1,23 +1,25 @@
 import { ComponentGroupManager } from './groupStore'
 import { Component, TickableComponent } from './components/_generic'
-import { Tickable } from '../types/tickable'
 import { createQueryEnv } from './molang/queries'
 import { execute as executeMoLang } from 'molang'
 import { EntityFlags } from './flags'
 import { World } from '../world/main'
 import { Position } from '../world/position'
 import { TargetRegistry, Target } from './targets'
-export class Entity implements Tickable {
+import { TickablePool } from '../world/tickablePool'
+
+export class Entity extends TickablePool {
 	public readonly position = new Position(0, 0, 0)
 	public readonly flags = new EntityFlags(this)
 
 	protected targetRegistry = new TargetRegistry(this)
 	protected componentGroups = new ComponentGroupManager(this)
 	protected activeComponents = new Map<string, Component>()
-	protected tickables = new Set<Tickable>()
+
 	protected queryEnv = createQueryEnv(this)
 
 	constructor(protected world: World, serverEntity: any) {
+		super()
 		this.world.addEntity(this)
 		this.targetRegistry.set('self', this)
 
@@ -67,16 +69,6 @@ export class Entity implements Tickable {
 	getTarget(target?: Target) {
 		if (!target) return this
 		return this.targetRegistry.get(target)
-	}
-
-	tick(currentTick: number) {
-		this.tickables.forEach((component) => component.tick(currentTick))
-	}
-	removeTickable(tickable: Tickable) {
-		this.tickables.delete(tickable)
-	}
-	addTickable(tickable: Tickable) {
-		this.tickables.add(tickable)
 	}
 
 	kill() {
