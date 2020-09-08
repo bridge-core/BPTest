@@ -1,5 +1,6 @@
 import { Entity } from '../main'
-import { createFilter, Evaluable } from '../filters/main'
+import { createFilter } from '../filters/main'
+import type { Evaluable } from '../filters/_generic'
 import { Target } from '../targets'
 
 export function ensureCorrectType(

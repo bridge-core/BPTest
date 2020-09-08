@@ -1,4 +1,4 @@
-import { Filter } from './main'
+import { Filter } from './_generic'
 import { Variant } from '../components/variant'
 
 export class IsMarkVariant extends Filter {

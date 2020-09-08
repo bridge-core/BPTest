@@ -11,19 +11,25 @@ export class Health extends Component {
 		super()
 		if (Array.isArray(componentData))
 			throw new Error(
-				`Invalid componentData type: Expected object, found array`
+				`${this.constructor.name}: Invalid componentData type: Expected object, found array`
 			)
 		if (typeof componentData?.value !== 'number')
 			throw new Error(
-				`Invalid type for value property: Expected number, found ${typeof componentData?.value}`
+				`${
+					this.constructor.name
+				}: Invalid type for value property: Expected number, found ${typeof componentData?.value}`
 			)
 		if (typeof componentData?.max !== 'number')
 			throw new Error(
-				`Invalid type for max property: Expected number, found ${typeof componentData?.max}`
+				`${
+					this.constructor.name
+				}: Invalid type for max property: Expected number, found ${typeof componentData?.max}`
 			)
 		if (typeof componentData?.min !== 'number')
 			throw new Error(
-				`Invalid type for min property: Expected number, found ${typeof componentData?.min}`
+				`${
+					this.constructor.name
+				}: Invalid type for min property: Expected number, found ${typeof componentData?.min}`
 			)
 		this.value = componentData?.value ?? 0
 		this.max = componentData?.max ?? 0

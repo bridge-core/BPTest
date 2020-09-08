@@ -1,4 +1,4 @@
-import { Filter } from './main'
+import { Filter } from './_generic'
 
 export class DistanceToNearestPlayer extends Filter {
 	get filterValue() {

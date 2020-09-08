@@ -1,5 +1,6 @@
 import { Entity } from '../main'
-import { createFilter, Evaluable } from './main'
+import { createFilter } from './main'
+import type { Evaluable } from './_generic'
 
 export class NoneOf implements Evaluable {
 	protected filters: Evaluable[]

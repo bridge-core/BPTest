@@ -1,5 +1,5 @@
 import { trigger } from '../../utils/EventSystem'
-import { Filter } from './main'
+import { Filter } from './_generic'
 
 export class HasTarget extends Filter {
 	get filterValue() {

@@ -48,6 +48,7 @@ export declare class Entity extends TickablePool {
     deactivateComponent(componentName: string): void;
     triggerEvent(eventName: string): void;
     getActiveComponent(componentName: string): Component | undefined;
+    getActiveComponents(): string[];
     getWorld(): World;
     getTarget(target?: Target): Entity;
     kill(): void;

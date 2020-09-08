@@ -12,9 +12,18 @@ export class World {
 	protected entityRegistry = new Map<string, unknown>()
 	protected nextEntityId = 0
 	protected entityCount = 0
+	protected currentTick = 0
 
 	constructor({ isExperimental }: WorldConfig) {
 		this.isExperimental = isExperimental
+	}
+
+	tick(ticksToSimulate = 1) {
+		const endTick = this.currentTick + ticksToSimulate
+		while (this.currentTick < endTick) {
+			this.entityPool.forEach((entity) => entity.tick(this.currentTick))
+			this.currentTick++
+		}
 	}
 
 	getIsExperimental() {

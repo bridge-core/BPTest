@@ -1,5 +1,5 @@
 import { Entity } from '../main';
-import { Evaluable } from '../filters/main';
+import type { Evaluable } from '../filters/_generic';
 import { Target } from '../targets';
 export declare function ensureCorrectType(eventTriggerData: unknown): Record<string, unknown>;
 export declare class EventTrigger {

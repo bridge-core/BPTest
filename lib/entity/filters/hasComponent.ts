@@ -1,4 +1,4 @@
-import { Filter } from './main'
+import { Filter } from './_generic'
 import { trigger } from '../../utils/EventSystem'
 
 export class HasComponent extends Filter {

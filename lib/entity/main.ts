@@ -103,6 +103,9 @@ export class Entity extends TickablePool {
 	getActiveComponent(componentName: string) {
 		return this.activeComponents.get(componentName)
 	}
+	getActiveComponents() {
+		return [...this.activeComponents.keys()]
+	}
 	getWorld() {
 		return this.world
 	}

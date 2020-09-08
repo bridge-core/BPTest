@@ -3,6 +3,7 @@ import { ComponentData } from '../componentLib'
 import { TickableComponent } from './_generic'
 import { EventTrigger } from '../events/eventTrigger'
 import { extractNumber, extractBoolean } from './utils'
+import { trigger } from '../../utils/EventSystem'
 
 export class Timer extends TickableComponent {
 	protected timeDownEvent: EventTrigger
@@ -11,20 +12,15 @@ export class Timer extends TickableComponent {
 	protected randomInterval: boolean
 
 	protected startTick = -1
-	/**
-	 * Prevents additional timer iterations with `looping=false`
-	 */
-	protected isActive = true
 
 	constructor(protected entity: Entity, componentData: ComponentData) {
 		super()
 		if (Array.isArray(componentData))
-			throw new Error(
-				`Invalid componentData type: Expected object, found array`
-			)
-		if (typeof componentData?.value !== 'number')
-			throw new Error(
-				`Invalid type for value property: Expected number, found ${typeof componentData?.value}`
+			trigger(
+				'error',
+				new Error(
+					`${this.constructor.name}: Invalid componentData type: Expected object, found array`
+				)
 			)
 
 		this.looping = extractBoolean(componentData, 'looping', true)
@@ -37,7 +33,7 @@ export class Timer extends TickableComponent {
 		this.time = Math.ceil(extractNumber(componentData, 'time', 0) * 20)
 		this.timeDownEvent = new EventTrigger(
 			entity,
-			componentData.time_down_event
+			(componentData as any).time_down_event
 		)
 	}
 

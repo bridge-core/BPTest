@@ -1,6 +1,7 @@
 import { Entity } from '../main'
 import { ComponentData } from '../componentLib'
 import { Component } from './_generic'
+import { trigger } from '../../utils/EventSystem'
 
 export class TypeFamily extends Component {
 	protected families: string[]
@@ -8,18 +9,27 @@ export class TypeFamily extends Component {
 	constructor(protected entity: Entity, componentData: ComponentData) {
 		super()
 		if (Array.isArray(componentData))
-			throw new Error(
-				`Invalid componentData type: Expected object, found array`
+			trigger(
+				'error',
+				new Error(
+					`${this.constructor.name}: Invalid componentData type: Expected object, found array`
+				)
 			)
 		if (
-			!Array.isArray(componentData?.family) ||
-			typeof componentData?.family !== 'string'
+			!Array.isArray((componentData as any)?.family) ||
+			typeof (componentData as any)?.family !== 'string'
 		)
-			throw new Error(
-				`Invalid type for value property: Expected number, found ${typeof componentData?.value}`
+			trigger(
+				'error',
+				new Error(
+					`${
+						this.constructor.name
+					}: Invalid type for value property: Expected string or string[], found ${typeof (componentData as any)
+						?.family}`
+				)
 			)
 
-		this.families = componentData.family
+		this.families = (componentData as any)?.family ?? []
 	}
 
 	getFamilies() {

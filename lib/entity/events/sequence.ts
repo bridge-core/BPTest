@@ -1,6 +1,7 @@
 import { Entity } from '../main'
 import { IEvent, createEvent } from './main'
-import { createFilter, Evaluable } from '../filters/main'
+import { createFilter } from '../filters/main'
+import type { Evaluable } from '../filters/_generic'
 
 export class SubEventSequence implements IEvent {
 	protected sequence: [Evaluable | null, IEvent][] = []

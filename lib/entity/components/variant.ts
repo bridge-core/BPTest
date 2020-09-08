@@ -9,11 +9,13 @@ export class Variant extends Component {
 		super()
 		if (Array.isArray(componentData))
 			throw new Error(
-				`Invalid componentData type: Expected object, found array`
+				`${this.constructor.name}: Invalid componentData type: Expected object, found array`
 			)
 		if (typeof componentData?.value !== 'number')
 			throw new Error(
-				`Invalid type for value property: Expected number, found ${typeof componentData?.value}`
+				`${
+					this.constructor.name
+				}: Invalid type for value property: Expected number, found ${typeof componentData?.value}`
 			)
 		this.value = componentData?.value ?? 0
 	}

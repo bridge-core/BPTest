@@ -9,7 +9,6 @@ export declare class Timer extends TickableComponent {
     protected looping: boolean;
     protected randomInterval: boolean;
     protected startTick: number;
-    protected isActive: boolean;
     constructor(entity: Entity, componentData: ComponentData);
     reset(): void;
     tick(currentTick: number): void;
