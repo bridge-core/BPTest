@@ -5,13 +5,15 @@ import { World } from '../world/main';
 import { Position } from '../world/position';
 import { TargetRegistry, Target } from './targets';
 import { TickablePool } from '../world/tickablePool';
+import { EventManager } from './events/main';
 export declare class Entity extends TickablePool {
     protected world: World;
     readonly position: Position;
     readonly flags: EntityFlags;
     protected targetRegistry: TargetRegistry;
-    protected componentGroups: ComponentGroupManager;
     protected activeComponents: Map<string, Component>;
+    protected events: EventManager;
+    readonly componentGroups: ComponentGroupManager;
     protected queryEnv: {
         'query.variant': () => number;
         'query.mark_variant': () => number;

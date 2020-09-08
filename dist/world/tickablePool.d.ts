@@ -4,4 +4,5 @@ export declare class TickablePool implements Tickable {
     tick(currentTick: number): void;
     removeTickable(tickable: Tickable): void;
     addTickable(tickable: Tickable): void;
+    schedule(tickable: Tickable): void;
 }

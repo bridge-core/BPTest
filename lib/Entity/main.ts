@@ -7,14 +7,17 @@ import { World } from '../world/main'
 import { Position } from '../world/position'
 import { TargetRegistry, Target } from './targets'
 import { TickablePool } from '../world/tickablePool'
+import { trigger } from '../utils/EventSystem'
+import { EventManager } from './events/main'
 
 export class Entity extends TickablePool {
 	public readonly position = new Position(0, 0, 0)
 	public readonly flags = new EntityFlags(this)
 
 	protected targetRegistry = new TargetRegistry(this)
-	protected componentGroups = new ComponentGroupManager(this)
 	protected activeComponents = new Map<string, Component>()
+	protected events: EventManager
+	public readonly componentGroups: ComponentGroupManager
 
 	protected queryEnv = createQueryEnv(this)
 
@@ -23,8 +26,41 @@ export class Entity extends TickablePool {
 		this.world.addEntity(this)
 		this.targetRegistry.set('self', this)
 
-		if ('minecraft:entity' in serverEntity) {
+		const {
+			description,
+			component_groups: componentGroups,
+			components,
+			events,
+		} = serverEntity['minecraft:entity'] || {}
+
+		// Load the entity description
+		if (!description)
+			trigger('error', new Error(`Entity has no valid description`))
+		this.flags.set('identifier', description.identifier)
+		this.flags.set('runtimeIdentifier', description.runtime_identifier)
+		this.flags.set('isSpawnable', description.is_spawnable)
+		this.flags.set('isSummonable', description.is_summonable)
+		this.flags.set('isExperimental', description.is_experimental)
+		// TODO: Load scripts & animations
+		// const { scripts, animations } = description || {}
+
+		// Load component groups
+		this.componentGroups = new ComponentGroupManager(
+			this,
+			componentGroups ?? {}
+		)
+
+		if (components) {
+			// Components are just a component group which is added by default
+			// The component group name maps to the entity's identifier
+			const defaultGroup = this.componentGroups.createComponentGroup(
+				this.flags.get('identifier') as string,
+				components
+			)
+			defaultGroup.add()
 		}
+
+		this.events = new EventManager(this, events ?? {})
 	}
 
 	executeMoLang(expression: string) {
@@ -58,7 +94,9 @@ export class Entity extends TickablePool {
 		//Remove component from activeComponents map
 		this.activeComponents.delete(componentName)
 	}
-	triggerEvent(eventName: string) {}
+	triggerEvent(eventName: string) {
+		this.events.trigger(eventName)
+	}
 
 	getActiveComponent(componentName: string) {
 		return this.activeComponents.get(componentName)
