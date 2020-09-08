@@ -12,4 +12,14 @@ export class TickablePool implements Tickable {
 	addTickable(tickable: Tickable) {
 		this.tickables.add(tickable)
 	}
+
+	schedule(tickable: Tickable) {
+		const scheduledTask = {
+			tick: (currentTick: number) => {
+				tickable.tick(currentTick)
+				this.tickables.delete(scheduledTask)
+			},
+		}
+		this.tickables.add(scheduledTask)
+	}
 }
