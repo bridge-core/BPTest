@@ -1,10 +1,12 @@
 import { Entity } from '../main'
-import { Component, ComponentData } from './main'
+import { ComponentData } from '../componentLib'
+import { Component } from './_generic'
 
-export class TypeFamily implements Component {
+export class TypeFamily extends Component {
 	protected families: string[]
 
 	constructor(protected entity: Entity, componentData: ComponentData) {
+		super()
 		if (Array.isArray(componentData))
 			throw new Error(
 				`Invalid componentData type: Expected object, found array`
@@ -23,7 +25,4 @@ export class TypeFamily implements Component {
 	getFamilies() {
 		return this.families
 	}
-
-	reset() {}
-	tick() {}
 }

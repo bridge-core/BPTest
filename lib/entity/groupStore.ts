@@ -1,5 +1,5 @@
 import { Entity } from './main'
-import { Component } from './components/main'
+import { Component } from './components/_generic'
 
 export class ComponentGroupManager {
 	protected componentGroups = new Map<string, ComponentGroup>()

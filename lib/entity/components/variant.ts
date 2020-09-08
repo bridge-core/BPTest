@@ -1,10 +1,12 @@
 import { Entity } from '../main'
-import { Component, ComponentData } from './main'
+import { ComponentData } from '../componentLib'
+import { Component } from './_generic'
 
-export class Variant implements Component {
+export class Variant extends Component {
 	protected value: number = 0
 
 	constructor(entity: Entity, componentData: ComponentData) {
+		super()
 		if (Array.isArray(componentData))
 			throw new Error(
 				`Invalid componentData type: Expected object, found array`
@@ -19,7 +21,4 @@ export class Variant implements Component {
 	getValue() {
 		return this.value
 	}
-
-	reset() {}
-	tick() {}
 }

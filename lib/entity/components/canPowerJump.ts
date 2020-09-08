@@ -1,9 +1,3 @@
-import { Entity } from '../main'
-import { Component } from './main'
+import { Component } from './_generic'
 
-export class CanPowerJump implements Component {
-	constructor(entity: Entity) {}
-
-	reset() {}
-	tick() {}
-}
+export class CanPowerJump extends Component {}

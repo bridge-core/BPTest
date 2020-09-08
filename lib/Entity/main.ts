@@ -1,5 +1,5 @@
 import { ComponentGroupManager } from './groupStore'
-import { Component } from './components/main'
+import { Component, TickableComponent } from './components/_generic'
 import { Tickable } from '../types/tickable'
 import { createQueryEnv } from './molang/queries'
 import { execute as executeMoLang } from 'molang'
@@ -14,11 +14,15 @@ export class Entity implements Tickable {
 	protected targetRegistry = new TargetRegistry(this)
 	protected componentGroups = new ComponentGroupManager(this)
 	protected activeComponents = new Map<string, Component>()
+	protected tickables = new Set<Tickable>()
 	protected queryEnv = createQueryEnv(this)
 
-	constructor(protected world: World) {
+	constructor(protected world: World, serverEntity: any) {
 		this.world.addEntity(this)
 		this.targetRegistry.set('self', this)
+
+		if ('minecraft:entity' in serverEntity) {
+		}
 	}
 
 	executeMoLang(expression: string) {
@@ -29,6 +33,12 @@ export class Entity implements Tickable {
 		const oldComponent = this.activeComponents.get(componentName)
 		if (oldComponent) oldComponent.reset()
 
+		// Make sure components get ticked/no longer ticked
+		if (oldComponent instanceof TickableComponent)
+			this.tickables.delete(oldComponent)
+		if (component instanceof TickableComponent)
+			this.tickables.add(component)
+
 		this.activeComponents.set(componentName, component)
 	}
 	deactivateComponent(componentName: string) {
@@ -38,7 +48,12 @@ export class Entity implements Tickable {
 				`Component "${componentName}" cannot be deactivated because it is not active at the moment.`
 			)
 
+		// Reset internal component state
 		component.reset()
+		// No longer tick deactivated component
+		if (component instanceof TickableComponent)
+			this.tickables.delete(component)
+		//Remove component from activeComponents map
 		this.activeComponents.delete(componentName)
 	}
 	triggerEvent(eventName: string) {}
@@ -55,9 +70,13 @@ export class Entity implements Tickable {
 	}
 
 	tick(currentTick: number) {
-		this.activeComponents.forEach((component) =>
-			component.tick(currentTick)
-		)
+		this.tickables.forEach((component) => component.tick(currentTick))
+	}
+	removeTickable(tickable: Tickable) {
+		this.tickables.delete(tickable)
+	}
+	addTickable(tickable: Tickable) {
+		this.tickables.add(tickable)
 	}
 
 	kill() {

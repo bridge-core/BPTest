@@ -1,12 +1,14 @@
 import { Entity } from '../main'
-import { Component, ComponentData } from './main'
+import { ComponentData } from '../componentLib'
+import { Component } from './_generic'
 
-export class Health implements Component {
+export class Health extends Component {
 	protected value = 20
 	protected max = 20
 	protected min = 0
 
 	constructor(protected entity: Entity, componentData: ComponentData) {
+		super()
 		if (Array.isArray(componentData))
 			throw new Error(
 				`Invalid componentData type: Expected object, found array`
@@ -47,7 +49,4 @@ export class Health implements Component {
 		this.value += amount
 		if (this.value > this.max) this.value = this.max
 	}
-
-	reset() {}
-	tick() {}
 }

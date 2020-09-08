@@ -1,13 +1,11 @@
-import { Tickable } from '../../types/tickable'
-import { Entity } from '../main'
-import { Variant } from './variant'
-import { Health } from './health'
-import { CanPowerJump } from './canPowerJump'
-import { TypeFamily } from './typeFamily'
+import { Entity } from './main'
+import { Variant } from './components/variant'
+import { Health } from './components/health'
+import { CanPowerJump } from './components/canPowerJump'
+import { TypeFamily } from './components/typeFamily'
+import { Timer } from './components/timer'
+import { Component } from './components/_generic'
 
-export interface Component extends Tickable {
-	reset: () => void
-}
 interface ComponentClass {
 	new (entity: Entity, componentData: ComponentData): Component
 }
@@ -20,6 +18,7 @@ const componentLibrary = new Map<string, ComponentClass>([
 	['minecraft:skin_id', Variant],
 	['minecraft:type_family', TypeFamily],
 	['minecraft:variant', Variant],
+	['minecraft:timer', Timer],
 ])
 
 export function createComponent(
