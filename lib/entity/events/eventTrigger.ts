@@ -1,5 +1,5 @@
 import { Entity } from '../main'
-import { Filter } from '../filters/main'
+import { createFilter, Evaluable } from '../filters/main'
 import { Target } from '../targets'
 
 export function ensureCorrectType(
@@ -17,14 +17,14 @@ export function ensureCorrectType(
 }
 
 export class EventTrigger {
-	filters?: Filter
+	filters?: Evaluable
 	eventName?: string
 	target?: Target
 
 	constructor(protected entity: Entity, eventTriggerData: unknown) {
 		const data = ensureCorrectType(eventTriggerData)
 
-		if (data?.filters) this.filters = new Filter(entity, data?.filters)
+		if (data?.filters) this.filters = createFilter(entity, data?.filters)
 		if (data?.event) {
 			if (typeof data?.event !== 'string')
 				throw new Error(

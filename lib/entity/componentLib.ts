@@ -5,6 +5,7 @@ import { CanPowerJump } from './components/canPowerJump'
 import { TypeFamily } from './components/typeFamily'
 import { Timer } from './components/timer'
 import { Component } from './components/_generic'
+import { Persistent } from './components/persistent'
 
 interface ComponentClass {
 	new (entity: Entity, componentData: ComponentData): Component
@@ -15,6 +16,7 @@ const componentLibrary = new Map<string, ComponentClass>([
 	['minecraft:can_power_jump', CanPowerJump],
 	['minecraft:health', Health],
 	['minecraft:mark_variant', Variant],
+	['minecraft:persistent', Persistent],
 	['minecraft:skin_id', Variant],
 	['minecraft:type_family', TypeFamily],
 	['minecraft:variant', Variant],

@@ -14,5 +14,6 @@ export declare class Position {
         y: number;
         z: number;
     };
+    distanceTo(position: Position): number;
     isWithin(position: Position, radius: number): boolean;
 }

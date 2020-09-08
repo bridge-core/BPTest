@@ -2,7 +2,7 @@ import { ComponentData } from '../componentLib'
 import { trigger } from '../../utils/EventSystem'
 
 export function extractNumber(
-	componentData: ComponentData,
+	componentData: unknown,
 	key: string,
 	defaultValue: number
 ) {
@@ -22,7 +22,7 @@ export function extractNumber(
 }
 
 export function extractBoolean(
-	componentData: ComponentData,
+	componentData: unknown,
 	key: string,
 	defaultValue: boolean
 ) {
@@ -39,4 +39,24 @@ export function extractBoolean(
 	}
 
 	return (componentData as any)[key] as boolean
+}
+
+export function extractString(
+	componentData: unknown,
+	key: string,
+	defaultValue: string
+) {
+	if (typeof (componentData as any)[key] !== 'string') {
+		trigger(
+			'error',
+			new Error(
+				`Invalid type for property "${key}": Expected string, found ${typeof (componentData as any)[
+					key
+				]}`
+			)
+		)
+		return defaultValue
+	}
+
+	return (componentData as any)[key] as string
 }

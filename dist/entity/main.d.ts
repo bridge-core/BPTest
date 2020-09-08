@@ -10,6 +10,7 @@ export declare class Entity extends TickablePool {
     protected world: World;
     readonly position: Position;
     readonly flags: EntityFlags;
+    readonly tags: Set<string>;
     protected targetRegistry: TargetRegistry;
     protected activeComponents: Map<string, Component>;
     protected events: EventManager;
@@ -48,6 +49,8 @@ export declare class Entity extends TickablePool {
     triggerEvent(eventName: string): void;
     getActiveComponent(componentName: string): Component | undefined;
     getWorld(): World;
-    getTarget(target?: Target): Entity | undefined;
+    getTarget(target?: Target): Entity;
     kill(): void;
+    getHealth(): number;
+    get isAlive(): boolean;
 }

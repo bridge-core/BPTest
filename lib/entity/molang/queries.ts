@@ -6,7 +6,6 @@ import { TypeFamily } from '../components/typeFamily'
 export function createQueryEnv(entity: Entity) {
 	//Helper function for accessing components
 	const c = (name: string) => entity.getActiveComponent(name)
-	const getHealth = () => (c('minecraft:health') as Health)?.getValue() ?? 20
 
 	return {
 		//Entity Components
@@ -16,8 +15,8 @@ export function createQueryEnv(entity: Entity) {
 			(c('minecraft:mark_variant') as Variant)?.getValue() ?? 0,
 		'query.skin_id': () =>
 			(c('minecraft:skin_id') as Variant)?.getValue() ?? 0,
-		'query.health': getHealth,
-		'query.is_alive': () => getHealth() > 0,
+		'query.health': entity.getHealth,
+		'query.is_alive': () => entity.getHealth() > 0,
 		'query.position': (index?: number) =>
 			index === undefined
 				? entity.position.asObject()

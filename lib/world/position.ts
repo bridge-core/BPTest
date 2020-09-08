@@ -30,6 +30,13 @@ export class Position {
 		return { x: this.x, y: this.y, z: this.z }
 	}
 
+	distanceTo(position: Position) {
+		return Math.sqrt(
+			Math.pow(this.x - position.getX(), 2) +
+				Math.pow(this.y - position.getY(), 2) +
+				Math.pow(this.z - position.getZ(), 2)
+		)
+	}
 	isWithin(position: Position, radius: number) {
 		return (
 			inRange(this.x, position.getX(), radius) &&

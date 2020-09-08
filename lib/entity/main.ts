@@ -9,10 +9,12 @@ import { TargetRegistry, Target } from './targets'
 import { TickablePool } from '../world/tickablePool'
 import { trigger } from '../utils/EventSystem'
 import { EventManager } from './events/main'
+import { Health } from './components/health'
 
 export class Entity extends TickablePool {
 	public readonly position = new Position(0, 0, 0)
 	public readonly flags = new EntityFlags(this)
+	public readonly tags = new Set<string>()
 
 	protected targetRegistry = new TargetRegistry(this)
 	protected activeComponents = new Map<string, Component>()
@@ -106,10 +108,20 @@ export class Entity extends TickablePool {
 	}
 	getTarget(target?: Target) {
 		if (!target) return this
-		return this.targetRegistry.get(target)
+		return this.targetRegistry.get(target) ?? this
 	}
 
 	kill() {
 		this.world.deleteEntity(this)
+	}
+	getHealth() {
+		return (
+			(this.getActiveComponent(
+				'minecraft:health'
+			) as Health)?.getValue() ?? 20
+		)
+	}
+	get isAlive() {
+		return this.getHealth() > 0
 	}
 }

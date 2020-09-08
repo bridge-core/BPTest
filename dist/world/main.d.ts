@@ -14,4 +14,5 @@ export declare class World {
     addEntity(entity: Entity): void;
     deleteEntity(entity: Entity): void;
     nearbyEntities(position: Position, radius: number): Entity[];
+    allEntities(): Entity[];
 }

@@ -38,4 +38,7 @@ export class World {
 			entity.position.isWithin(position, radius)
 		)
 	}
+	allEntities() {
+		return [...this.entityPool]
+	}
 }
