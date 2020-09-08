@@ -1,0 +1,51 @@
+import { ComponentGroupManager } from './groupStore';
+import { Component } from './components/_generic';
+import { EntityFlags } from './flags';
+import { World } from '../world/main';
+import { Position } from '../world/position';
+import { TargetRegistry, Target } from './targets';
+import { TickablePool } from '../world/tickablePool';
+export declare class Entity extends TickablePool {
+    protected world: World;
+    readonly position: Position;
+    readonly flags: EntityFlags;
+    protected targetRegistry: TargetRegistry;
+    protected componentGroups: ComponentGroupManager;
+    protected activeComponents: Map<string, Component>;
+    protected queryEnv: {
+        'query.variant': () => number;
+        'query.mark_variant': () => number;
+        'query.skin_id': () => number;
+        'query.health': () => number;
+        'query.is_alive': () => boolean;
+        'query.position': (index?: number | undefined) => number | {
+            x: number;
+            y: number;
+            z: number;
+        };
+        'query.has_any_family': (...families: string[]) => boolean;
+        'query.blocking': () => unknown;
+        'query.can_climb': () => unknown;
+        'query.can_fly': () => unknown;
+        'query.can_power_jump': () => boolean;
+        'query.can_swim': () => unknown;
+        'query.can_walk': () => unknown;
+        'query.is_on_fire': () => unknown;
+        'query.is_onfire': () => unknown;
+        'query.get_actor_info_id': () => unknown;
+        'query.actor_count': () => number;
+        'query.count': (value: unknown) => number;
+        'query.combine_entities': (...entities: unknown[]) => unknown[];
+        'query.get_nearby_entities': (radius: number, filterId?: string | undefined) => Entity[];
+        'query.get_nearby_entities_except_self': (radius: number, filterId?: string | undefined) => Entity[];
+    };
+    constructor(world: World, serverEntity: any);
+    executeMoLang(expression: string): void;
+    activateComponent(componentName: string, component: Component): void;
+    deactivateComponent(componentName: string): void;
+    triggerEvent(eventName: string): void;
+    getActiveComponent(componentName: string): Component | undefined;
+    getWorld(): World;
+    getTarget(target?: Target): Entity | undefined;
+    kill(): void;
+}
