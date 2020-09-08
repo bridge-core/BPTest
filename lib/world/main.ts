@@ -1,5 +1,6 @@
 import { Entity } from '../entity/main'
 import { Position } from './position'
+import { trigger } from '../utils/EventSystem'
 
 export interface WorldConfig {
 	isExperimental: boolean
@@ -8,6 +9,7 @@ export interface WorldConfig {
 export class World {
 	protected entityPool = new Set<Entity>()
 	protected isExperimental: boolean
+	protected entityRegistry = new Map<string, unknown>()
 	protected nextEntityId = 0
 	protected entityCount = 0
 
@@ -40,5 +42,22 @@ export class World {
 	}
 	allEntities() {
 		return [...this.entityPool]
+	}
+
+	registerEntity(entityData: any) {
+		const identifier =
+			entityData['minecraft:entity']?.description?.identifier
+		this.entityRegistry.set(identifier, entityData)
+	}
+	summon(identifier: string) {
+		const entityData = this.entityRegistry.get(identifier)
+		if (entityData !== undefined) return new Entity(this, entityData)
+
+		trigger(
+			'error',
+			new Error(
+				`Cannot summon entity with identifier "${identifier}": This entity does not exist`
+			)
+		)
 	}
 }
